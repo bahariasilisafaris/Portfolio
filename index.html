@@ -1,0 +1,1819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!--
+  ============================================================================
+  SHADRACK SAFARI — personal portfolio / live CV / sales page for 3 websites.
+  One file, no build step. Layout inspired by the "Linea" template by 8B (MIT).
+
+  ▸ Everything you need to edit lives in the SITE object at the top of the
+    <script> block near the end of this file (name, email, WhatsApp, roles,
+    the three projects, copy strings).
+  ▸ Drop your own hero photo at assets/hero.jpg (a wide photo works best).
+    Until then a painted sunset gradient is used.
+  ▸ Deploy: see README.md (Vercel: no build command, output = this folder).
+  ============================================================================
+-->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shadrack Safari — Websites that sell. Pages that grow.</title>
+<meta name="description" content="Shadrack Safari, Mombasa. Full stack developer, social media manager and front office / customer support. Three live websites for sale, ready to hand to your engineer.">
+<meta name="theme-color" content="#1b1411">
+<meta property="og:title" content="Shadrack Safari — Websites that sell. Pages that grow.">
+<meta property="og:description" content="Full stack developer in Mombasa, Kenya. Three finished websites for sale.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%231b1411'/%3E%3Cpath d='M20 42c4 3 9 4 14 3 6-1 9-4 9-8 0-5-5-7-12-9-6-2-9-3-9-7 0-3 3-6 9-6 4 0 8 1 11 3' fill='none' stroke='%2333cc7a' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+<script>
+/* Theme before first paint: device setting unless the visitor chose one. */
+(function () {
+  try {
+    var saved = localStorage.getItem('shadrack-theme');
+    var theme = saved || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    document.documentElement.dataset.theme = theme;
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.documentElement.classList.add('js-motion');
+    }
+  } catch (e) {
+    document.documentElement.dataset.theme = 'light';
+  }
+})();
+</script>
+<style>
+/* ══════════════════════════════════════════════════════════════════════════
+   1 · TOKENS — Linea's warm paper + espresso bands, one green accent.
+   ══════════════════════════════════════════════════════════════════════════ */
+:root {
+  /* Linea palette (fixed) */
+  --espresso: #1b1411;
+  --paper:    #faf5f0;
+  --sand:     #eee5dc;
+  --green:    #33cc7a;
+  --green-deep: #1f9e5c;
+  --brown:    #66574f;
+  --navy:     #1f3954;
+  --sky:      #bacde0;
+  --bark:     #2e241f;
+  --taupe:    #b8aba3;
+
+  /* Semantic — light theme */
+  --bg:        var(--paper);
+  --bg-soft:   var(--sand);
+  --card:      var(--paper);
+  --card-2:    #ffffff;
+  --ink:       var(--espresso);
+  --muted:     var(--brown);
+  --line:      rgba(27, 20, 17, .14);
+  --line-soft: rgba(27, 20, 17, .08);
+  --band-ink:      #ffffff;
+  --band-muted:    var(--sky);
+  --shadow-card:   0 1.2rem 3rem rgba(27, 20, 17, .10);
+  --shadow-pop:    0 .4rem 1.4rem rgba(27, 20, 17, .16);
+  --green-shadow:  0 .5rem 1.4rem rgba(51, 204, 122, .35);
+
+  /* Rhythm (from Linea) */
+  --gutter:  clamp(1.125rem, 4.2vw, 3.5rem);
+  --band-y:  clamp(4.5rem, 10vw, 9rem);
+  --radius-band: clamp(1.6rem, 3.2vw, 3.5rem);
+  --radius-card: 1.75rem;
+  --radius-pill: 100vmax;
+  --wrap: 88rem;
+  --nav-h: 4.25rem;
+
+  --font: "Host Grotesk", "Segoe UI", Arial, sans-serif;
+}
+:root[data-theme="dark"] {
+  --bg:        #16100d;
+  --bg-soft:   #211812;
+  --card:      var(--bark);
+  --card-2:    #3a2d26;
+  --ink:       var(--paper);
+  --muted:     var(--taupe);
+  --line:      rgba(250, 245, 240, .16);
+  --line-soft: rgba(250, 245, 240, .09);
+  --shadow-card: 0 1.2rem 3rem rgba(0, 0, 0, .45);
+  --shadow-pop:  0 .4rem 1.4rem rgba(0, 0, 0, .5);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   2 · BASE
+   ══════════════════════════════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+html { scroll-behavior: smooth; }
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+body {
+  font-family: var(--font);
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+  transition: background-color .45s ease, color .45s ease;
+}
+img, svg { display: block; max-width: 100%; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+a { color: inherit; text-decoration: none; }
+ul, ol { list-style: none; padding: 0; }
+::selection { background: var(--green); color: var(--espresso); }
+
+:focus-visible {
+  outline: 3px solid var(--green);
+  outline-offset: 3px;
+  border-radius: .35rem;
+}
+.skip {
+  position: fixed; inset: .75rem auto auto .75rem; z-index: 200;
+  padding: .7rem 1.1rem; background: var(--green); color: var(--espresso);
+  font-weight: 600; border-radius: .75rem;
+  transform: translateY(-300%); transition: transform .2s ease;
+}
+.skip:focus { transform: none; }
+.vh {
+  position: absolute !important; width: 1px; height: 1px;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   3 · TYPE SCALE (Linea's m-text family)
+   ══════════════════════════════════════════════════════════════════════════ */
+.t-display {
+  font-size: clamp(2.9rem, 6.4vw, 6rem);
+  font-weight: 600; line-height: .98; letter-spacing: -.045em;
+}
+.t-h2 {
+  font-size: clamp(2.1rem, 5vw, 4.6rem);
+  font-weight: 600; line-height: 1.02; letter-spacing: -.04em;
+  text-wrap: balance;
+}
+.t-h3 {
+  font-size: clamp(1.1875rem, 1.6vw, 1.4375rem);
+  font-weight: 600; line-height: 1.2; letter-spacing: -.02em;
+}
+.t-lead {
+  font-size: clamp(1.125rem, 1.35vw, 1.3125rem);
+  line-height: 1.5; letter-spacing: -.01em; color: var(--muted);
+}
+.t-small { font-size: .9375rem; font-weight: 600; letter-spacing: -.01em; }
+.t-cap { font-size: .8125rem; line-height: 1.5; color: var(--muted); }
+.t-mono {
+  font-variant-numeric: tabular-nums; letter-spacing: .02em;
+}
+
+/* Words get split for reveals & hover lift */
+.w { display: inline-block; overflow: hidden; vertical-align: bottom; }
+.w > i { display: inline-block; font-style: inherit; will-change: transform; }
+.w-lift { transition: transform .28s cubic-bezier(.34, 1.56, .64, 1); }
+@media (hover: hover) and (pointer: fine) {
+  .w-lift:hover { transform: translateY(-.12em); }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   4 · LAYOUT SHELLS
+   ══════════════════════════════════════════════════════════════════════════ */
+.wrap { width: min(100% - 2 * var(--gutter), var(--wrap)); margin-inline: auto; }
+.band { padding-block: var(--band-y); position: relative; }
+.band--soft { background: var(--bg-soft); }
+.band--navy { background: var(--navy); color: var(--band-ink); }
+.band--navy .t-lead { color: var(--band-muted); }
+.band--espresso { background: var(--espresso); color: var(--paper); }
+.band--espresso .t-lead { color: var(--taupe); }
+.round-top { border-radius: var(--radius-band) var(--radius-band) 0 0; margin-top: calc(var(--band-y) * -.6); }
+
+.eyebrow {
+  display: inline-flex; align-items: center; gap: .5rem;
+  font-size: .8125rem; font-weight: 600; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--muted);
+  margin-bottom: 1.1rem;
+}
+.eyebrow::before {
+  content: ""; width: 1.75rem; height: 2px; border-radius: 2px;
+  background: var(--green);
+}
+.band--navy .eyebrow, .band--espresso .eyebrow { color: var(--band-muted); }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   5 · BUTTONS (Linea's green pill + espresso secondary)
+   ══════════════════════════════════════════════════════════════════════════ */
+.btn {
+  --btn-bg: var(--green);
+  --btn-ink: var(--espresso);
+  position: relative; display: inline-flex; align-items: center; justify-content: center;
+  gap: .6rem; min-height: 3.25rem; padding: .875rem 1.625rem;
+  background: var(--btn-bg); color: var(--btn-ink);
+  font-weight: 600; letter-spacing: -.01em; line-height: 1.2; text-align: center;
+  border-radius: var(--radius-pill);
+  box-shadow: var(--green-shadow);
+  transition: transform .25s ease, box-shadow .25s ease, background-color .25s ease;
+  will-change: transform;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn:active { transform: translateY(0) scale(.98); }
+.btn--ink { --btn-bg: var(--espresso); --btn-ink: var(--paper); box-shadow: 0 .5rem 1.4rem rgba(27, 20, 17, .3); }
+.btn--ghost {
+  --btn-bg: transparent; --btn-ink: currentColor;
+  box-shadow: inset 0 0 0 1.5px currentColor;
+}
+.btn--ghost:hover { --btn-bg: rgba(255, 255, 255, .08); }
+.band:not(.band--navy):not(.band--espresso) .btn--ghost:hover { --btn-bg: rgba(27, 20, 17, .05); }
+.btn--sm { min-height: 2.6rem; padding: .55rem 1.2rem; font-size: .9375rem; }
+.btn .btn__bars { display: inline-flex; gap: 2.5px; align-items: center; height: .9em; }
+.btn .btn__bars i {
+  width: 2.5px; height: 30%; border-radius: 2px; background: currentColor;
+  transition: height .25s ease;
+}
+.btn:hover .btn__bars i:nth-child(1) { height: 60%; }
+.btn:hover .btn__bars i:nth-child(2) { height: 100%; }
+.btn:hover .btn__bars i:nth-child(3) { height: 45%; }
+
+.tag {
+  display: inline-flex; align-items: center; gap: .4rem;
+  padding: .3rem .75rem; border-radius: var(--radius-pill);
+  font-size: .8125rem; font-weight: 600; line-height: 1.4;
+  background: var(--bg-soft); color: var(--muted);
+  border: 1px solid var(--line-soft);
+}
+.tag--sale { background: rgba(51, 204, 122, .16); color: var(--green-deep); border-color: transparent; }
+:root[data-theme="dark"] .tag--sale { color: var(--green); }
+.tag--sale::before {
+  content: ""; width: .5rem; height: .5rem; border-radius: 50%;
+  background: var(--green); animation: pulse 2.2s ease-in-out infinite;
+}
+@keyframes pulse { 50% { opacity: .35; } }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   6 · NAV — floating espresso pill
+   ══════════════════════════════════════════════════════════════════════════ */
+.nav {
+  position: fixed; top: .875rem; left: 0; right: 0; z-index: 100;
+  transition: transform .4s ease;
+}
+.nav.is-hidden { transform: translateY(calc(-100% - 1.5rem)); }
+.nav__bar {
+  display: flex; align-items: center; gap: 1rem;
+  width: min(100% - 1.5rem, var(--wrap)); margin-inline: auto;
+  min-height: var(--nav-h); padding: .5rem .5rem .5rem 1.25rem;
+  background: color-mix(in srgb, var(--espresso) 82%, transparent);
+  border: 1px solid rgba(250, 245, 240, .14);
+  border-radius: var(--radius-pill);
+  -webkit-backdrop-filter: blur(.9rem) saturate(1.3);
+  backdrop-filter: blur(.9rem) saturate(1.3);
+  color: var(--paper);
+  box-shadow: 0 .5rem 2rem rgba(27, 20, 17, .18);
+}
+.nav__logo {
+  display: inline-flex; align-items: center; gap: .55rem;
+  font-weight: 700; font-size: 1.1875rem; letter-spacing: -.03em;
+}
+.nav__logo svg { width: 1.5rem; height: 1.5rem; flex: none; }
+.nav__logo .stroke { stroke-dasharray: 60; stroke-dashoffset: 0; }
+.nav__links { display: flex; gap: .25rem; margin-inline: auto; }
+.nav__links a {
+  position: relative; padding: .5rem .72rem; border-radius: .6rem;
+  font-size: .9375rem; font-weight: 500; color: rgba(250, 245, 240, .78);
+  transition: color .2s ease, background-color .2s ease;
+  white-space: nowrap;
+}
+.nav__links a:hover, .nav__links a[aria-current="true"] { color: var(--paper); background: rgba(250, 245, 240, .09); }
+.nav__right { display: flex; align-items: center; gap: .5rem; }
+.nav__toggle {
+  display: grid; place-items: center; width: 2.75rem; height: 2.75rem;
+  border-radius: 50%; border: 1px solid rgba(250, 245, 240, .18);
+  transition: background-color .2s ease;
+}
+.nav__toggle:hover { background: rgba(250, 245, 240, .1); }
+.nav__toggle svg { width: 1.2rem; height: 1.2rem; }
+.nav__toggle .moon { display: none; }
+:root[data-theme="dark"] .nav__toggle .sun { display: none; }
+:root[data-theme="dark"] .nav__toggle .moon { display: block; }
+.nav__burger { display: none; }
+@media (max-width: 1080px) {
+  .nav__links, .nav__right .btn { display: none; }
+  .nav__burger {
+    display: grid; place-items: center; width: 2.75rem; height: 2.75rem;
+    margin-left: auto; border-radius: 50%;
+    border: 1px solid rgba(250, 245, 240, .18);
+  }
+  .nav__burger span, .nav__burger span::before, .nav__burger span::after {
+    content: ""; display: block; width: 1.1rem; height: 2px; border-radius: 2px;
+    background: var(--paper); transition: transform .3s ease, opacity .3s ease;
+  }
+  .nav__burger span::before { transform: translateY(-5px); }
+  .nav__burger span::after { transform: translateY(3px); }
+  .nav__burger[aria-expanded="true"] span { background: transparent; }
+  .nav__burger[aria-expanded="true"] span::before { transform: rotate(45deg); }
+  .nav__burger[aria-expanded="true"] span::after { transform: translateY(-2px) rotate(-45deg); }
+}
+.menu {
+  position: fixed; inset: 0; z-index: 90; display: grid; place-items: center;
+  background: var(--espresso); color: var(--paper);
+  padding: calc(var(--nav-h) + 2rem) var(--gutter) 2rem;
+  opacity: 0; visibility: hidden; transition: opacity .35s ease, visibility .35s;
+}
+.menu.is-open { opacity: 1; visibility: visible; }
+.menu[hidden] { display: none; }
+.menu ul { display: grid; gap: .35rem; text-align: center; }
+.menu a { font-size: clamp(1.6rem, 6vw, 2.4rem); font-weight: 600; letter-spacing: -.03em; padding: .3rem; }
+.menu a:hover { color: var(--green); }
+.menu .btn { margin-top: 1.5rem; }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   7 · HERO
+   ══════════════════════════════════════════════════════════════════════════ */
+.hero {
+  position: relative; min-height: 100svh;
+  display: grid; align-items: end;
+  padding-block: calc(var(--nav-h) + 4rem) clamp(3rem, 7vh, 5.5rem);
+  background: var(--navy); color: var(--band-ink);
+  overflow: clip;
+}
+.hero__photo, .hero__veil { position: absolute; inset: 0; }
+.hero__photo {
+  background:
+    radial-gradient(58% 45% at 78% 18%, rgba(250, 200, 120, .34), transparent 62%),
+    radial-gradient(90% 60% at 20% 100%, #0e2a3d 4%, transparent 70%),
+    linear-gradient(160deg, #2a4a6b 0%, #1f3954 42%, #14283c 100%);
+  background-size: cover; background-position: center;
+  transform-origin: 50% 60%;
+  will-change: transform;
+}
+.hero__photo::after {
+  content: ""; position: absolute; inset: auto 0 0 0; height: 34%;
+  background: linear-gradient(180deg, transparent, rgba(9, 22, 34, .55));
+}
+.hero__veil {
+  background: linear-gradient(180deg, rgba(15, 28, 42, .45) 0%, rgba(15, 28, 42, .15) 34%, rgba(13, 24, 36, .78) 100%);
+}
+.hero__inner { position: relative; z-index: 2; }
+.hero__title { max-width: 9.8em; margin-bottom: 1.4rem; }
+.hero__title .accent { color: var(--green); }
+.hero__sub { max-width: 34em; color: rgba(250, 245, 240, .86); }
+.hero__actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 2rem; }
+.hero__trust {
+  display: flex; flex-wrap: wrap; gap: .5rem 2.2rem;
+  margin-top: 2.6rem; padding-top: 1.6rem;
+  border-top: 1px solid rgba(250, 245, 240, .18);
+}
+.hero__trust li { display: grid; gap: .1rem; }
+.hero__trust b { font-size: clamp(1.4rem, 2.4vw, 1.9rem); font-weight: 600; letter-spacing: -.03em; }
+.hero__trust span { font-size: .875rem; color: var(--band-muted); }
+
+/* Floating chat bubbles (Linea's phone messages) */
+.bubbles { position: absolute; inset: 0; z-index: 3; pointer-events: none; }.bubble { 
+  position: absolute; max-width: min(17.5rem, 74vw);
+  display: flex; gap: .6rem; align-items: flex-end;
+  padding: .8rem 1.05rem; border-radius: 1.25rem;
+  background: var(--paper); color: var(--espresso);
+  font-size: .9375rem; font-weight: 500; line-height: 1.35;
+  box-shadow: var(--shadow-pop);
+  pointer-events: auto;
+}
+.bubble b { font-weight: 600; }
+.bubble--me { background: var(--green); }
+.bubble .wave { display: inline-flex; align-items: center; gap: 2px; height: .85em; flex: none; margin-bottom: .15em; }
+.bubble .wave i { width: 2.5px; border-radius: 2px; background: currentColor; opacity: .65; }
+.bubble .wave i:nth-child(1) { height: 40%; }
+.bubble .wave i:nth-child(2) { height: 85%; }
+.bubble .wave i:nth-child(3) { height: 55%; }
+.bubble .wave i:nth-child(4) { height: 100%; }
+.bubble .wave i:nth-child(5) { height: 35%; }
+.bubble:nth-of-type(1) { top: 14%; right: 3%; rotate: 1.6deg; }
+.bubble:nth-of-type(2) { top: 34%; right: 8%; rotate: -1.4deg; }
+.bubble:nth-of-type(3) { top: 54%; right: 2%; rotate: 1deg; }
+@media (max-width: 900px) {
+  .bubbles { position: static; display: grid; gap: .7rem; order: 2; margin-top: 1.8rem; padding-inline: var(--gutter); }
+  .bubble { position: static; rotate: none !important; max-width: 100%; }
+  .bubble:nth-of-type(3) { display: none; }
+  .hero__inner { order: 1; }
+}
+.hero__scroll {
+  position: absolute; left: 50%; bottom: 1.1rem; z-index: 4;
+  translate: -50% 0; display: grid; justify-items: center; gap: .35rem;
+  font-size: .75rem; letter-spacing: .12em; text-transform: uppercase;
+  color: rgba(250, 245, 240, .6);
+}
+.hero__scroll i {
+  width: 1px; height: 2.2rem; background: rgba(250, 245, 240, .4);
+  overflow: hidden; position: relative;
+}
+.hero__scroll i::after {
+  content: ""; position: absolute; inset: 0; background: var(--green);
+  animation: drip 1.8s ease-in-out infinite;
+}
+@keyframes drip { 0% { transform: translateY(-100%); } 60%, 100% { transform: translateY(100%); } }
+@media (max-width: 900px) { .hero__scroll { display: none; } }
+</style>
+<style>
+/* ══════════════════════════════════════════════════════════════════════════
+   8 · STATEMENT — "You ask / I deliver" two-column stage
+   ══════════════════════════════════════════════════════════════════════════ */
+.how__head { max-width: 46rem; margin-bottom: clamp(2.5rem, 6vw, 4.5rem); }
+.how__stage {
+  display: grid; grid-template-columns: 1fr auto 1fr; gap: clamp(1rem, 3vw, 3rem);
+  align-items: start; align-content: center;
+  min-height: min(72vh, 34rem);
+}
+.how__col { display: grid; gap: 1rem; }
+.how__label {
+  font-size: .8125rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: .4rem;
+}
+.how__mid {
+  align-self: stretch; width: clamp(2px, .5vw, 3px); border-radius: 3px;
+  background: linear-gradient(180deg, transparent, var(--green) 18%, var(--green) 82%, transparent);
+  opacity: .5; transform-origin: top;
+}
+.say {
+  padding: 1rem 1.2rem; border-radius: 1.25rem 1.25rem 1.25rem .3rem;
+  background: var(--card); border: 1px solid var(--line-soft);
+  box-shadow: var(--shadow-card); font-weight: 500;
+}
+.say--answer {
+  border-radius: 1.25rem 1.25rem .3rem 1.25rem;
+  background: var(--green); border-color: transparent; color: var(--espresso);
+  font-weight: 600;
+}
+@media (max-width: 860px) {
+  .how__stage { grid-template-columns: 1fr; }
+  .how__mid { display: none; }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   9 · PROJECTS — sticky browser mockup + site list
+   ══════════════════════════════════════════════════════════════════════════ */
+.work__head { max-width: 46rem; margin-bottom: clamp(2.5rem, 6vw, 4.5rem); }
+.work__grid { display: grid; gap: clamp(2rem, 4vw, 4rem); }
+.work__stick { position: sticky; top: calc(var(--nav-h) + .7rem); z-index: 4; }
+@media (min-width: 960px) {
+  .work__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; }
+  .work__stick { top: calc(var(--nav-h) + 1.6rem); }
+}
+.browser {
+  border-radius: var(--radius-card); overflow: hidden;
+  background: var(--card); border: 1px solid var(--line);
+  box-shadow: var(--shadow-card);
+  transform-style: preserve-3d;
+}
+.browser__bar {
+  display: flex; align-items: center; gap: .6rem;
+  padding: .7rem 1rem; background: var(--bg-soft); border-bottom: 1px solid var(--line-soft);
+}
+.browser__dots { display: flex; gap: .38rem; flex: none; }
+.browser__dots i { width: .65rem; height: .65rem; border-radius: 50%; background: var(--line); }
+.browser__dots i:first-child { background: #e5644e; }
+.browser__dots i:nth-child(2) { background: #e5b64e; }
+.browser__dots i:nth-child(3) { background: var(--green); }
+.browser__url {
+  flex: 1; min-width: 0; padding: .35rem .9rem; border-radius: var(--radius-pill);
+  background: var(--card); border: 1px solid var(--line-soft);
+  font-size: .8125rem; color: var(--muted); white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis;
+}
+.browser__view { position: relative; aspect-ratio: 8 / 5; background: var(--bg-soft); }
+.browser__view img {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top center;
+  opacity: 0; transform: translateY(4%) scale(1.02);
+  transition: opacity .5s ease, transform .6s cubic-bezier(.22, 1, .36, 1);
+}
+.browser__view img.is-active { opacity: 1; transform: none; }
+
+.work__list { display: grid; gap: 1.2rem; }
+.site {
+  position: relative; padding: clamp(1.4rem, 3vw, 2rem);
+  border-radius: var(--radius-card); background: var(--card);
+  border: 1px solid var(--line); box-shadow: var(--shadow-card);
+  transition: border-color .3s ease, box-shadow .3s ease;
+  transform-style: preserve-3d;
+}
+.site.is-active { border-color: color-mix(in srgb, var(--green) 55%, var(--line)); }
+.site__top { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; margin-bottom: .9rem; }
+.site__kind { font-size: .875rem; color: var(--muted); }
+.site__name { margin-bottom: .5rem; }
+.site__blurb { color: var(--muted); margin-bottom: 1rem; }
+.site__feats { display: flex; flex-wrap: wrap; gap: .45rem; margin-bottom: 1.3rem; }
+.site__actions { display: flex; flex-wrap: wrap; gap: .6rem; }
+</style>
+<style>
+/* ══════════════════════════════════════════════════════════════════════════
+   10 · SKILLS — settings panel that drives a live preview
+   ══════════════════════════════════════════════════════════════════════════ */
+.skills__head { max-width: 44rem; margin-bottom: clamp(2.5rem, 6vw, 4.5rem); }
+.skills__grid { display: grid; gap: clamp(1.5rem, 3vw, 2.5rem); align-items: start; }
+@media (min-width: 960px) { .skills__grid { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); } }
+.panel {
+  padding: clamp(1.3rem, 2.6vw, 1.9rem); border-radius: var(--radius-card);
+  background: var(--card); border: 1px solid var(--line); box-shadow: var(--shadow-card);
+  display: grid; gap: 1.15rem; align-content: start;
+}
+.panel__row { display: grid; gap: .55rem; }
+.panel__row > label, .panel__legend {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
+  font-size: .9375rem; font-weight: 600; padding: 0;
+}
+.panel__row output, .panel__legend output { font-size: .8125rem; font-weight: 500; color: var(--muted); }
+input[type="range"] {
+  -webkit-appearance: none; appearance: none; width: 100%; height: 1.6rem; background: transparent;
+}
+input[type="range"]::-webkit-slider-runnable-track {
+  height: .45rem; border-radius: .45rem;
+  background: linear-gradient(90deg, var(--green) var(--fill, 50%), var(--bg-soft) var(--fill, 50%));
+  border: 1px solid var(--line-soft);
+}
+input[type="range"]::-moz-range-track {
+  height: .45rem; border-radius: .45rem; background: var(--bg-soft); border: 1px solid var(--line-soft);
+}
+input[type="range"]::-moz-range-progress { height: .45rem; border-radius: .45rem; background: var(--green); }
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 1.25rem; height: 1.25rem; margin-top: -.45rem;
+  border-radius: 50%; background: var(--card-2); border: 2px solid var(--green);
+  box-shadow: 0 .2rem .6rem rgba(27, 20, 17, .25); cursor: grab;
+}
+input[type="range"]::-moz-range-thumb {
+  width: 1.25rem; height: 1.25rem; border-radius: 50%;
+  background: var(--card-2); border: 2px solid var(--green); cursor: grab;
+}
+.panel__skills { display: grid; gap: .3rem; padding-top: .9rem; border-top: 1px solid var(--line-soft); }
+.skill { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: .4rem; }
+.skill__name { font-weight: 600; font-size: .9375rem; }
+.skill__note { font-size: .8125rem; color: var(--muted); }
+.switch {
+  position: relative; flex: none; width: 3rem; height: 1.7rem; border-radius: var(--radius-pill);
+  background: var(--bg-soft); border: 1px solid var(--line);
+  transition: background-color .25s ease, border-color .25s ease;
+}
+.switch::after {
+  content: ""; position: absolute; top: 50%; left: .18rem; translate: 0 -50%;
+  width: 1.22rem; height: 1.22rem; border-radius: 50%;
+  background: var(--card-2); box-shadow: 0 .15rem .45rem rgba(27, 20, 17, .3);
+  transition: left .25s cubic-bezier(.34, 1.4, .64, 1);
+}
+.switch[aria-checked="true"] { background: var(--green); border-color: transparent; }
+.switch[aria-checked="true"]::after { left: 1.55rem; }
+.seg {
+  display: inline-flex; padding: .22rem; border-radius: var(--radius-pill);
+  background: var(--bg-soft); border: 1px solid var(--line-soft); gap: .2rem;
+}
+.seg button {
+  padding: .38rem 1rem; border-radius: var(--radius-pill); font-size: .875rem; font-weight: 600;
+  color: var(--muted); transition: background-color .25s ease, color .25s ease;
+}
+.seg button[aria-pressed="true"] { background: var(--card-2); color: var(--ink); box-shadow: 0 .1rem .4rem rgba(27, 20, 17, .18); }
+
+.preview {
+  position: sticky; top: calc(var(--nav-h) + 1.6rem);
+  padding: clamp(1.3rem, 2.6vw, 2rem); border-radius: var(--radius-card);
+  background: var(--navy); color: var(--band-ink); box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+@media (max-width: 959px) { .preview { position: static; } }
+.preview__bar {
+  display: flex; align-items: center; gap: .5rem; margin-bottom: 1.3rem;
+  font-size: .8125rem; color: var(--band-muted);
+}
+.preview__card {
+  padding: 1.4rem; border-radius: 1.25rem; background: rgba(250, 245, 240, .07);
+  border: 1px solid rgba(250, 245, 240, .12); display: grid; gap: 1.05rem;
+}
+.preview__line {
+  font-size: var(--pv-size, 1.6rem); font-weight: var(--pv-weight, 600);
+  letter-spacing: -.03em; line-height: 1.12; transition: font-size .25s ease, font-weight .25s ease;
+}
+.preview__chats { display: grid; gap: .55rem; }
+.preview__bubble {
+  justify-self: start; max-width: 85%; padding: .55rem .9rem; border-radius: 1rem 1rem 1rem .3rem;
+  background: var(--paper); color: var(--espresso); font-size: .875rem; font-weight: 500;
+}
+.preview__bubble--me { justify-self: end; border-radius: 1rem 1rem .3rem 1rem; background: var(--green); }
+.preview__tags { display: flex; flex-wrap: wrap; gap: .4rem; }
+.preview__tags .tag {
+  background: rgba(250, 245, 240, .1); border-color: rgba(250, 245, 240, .14); color: var(--paper);
+}
+</style>
+<style>
+/* ══════════════════════════════════════════════════════════════════════════
+   11 · IN THE ROOM — pinned horizontal role cards
+   ══════════════════════════════════════════════════════════════════════════ */
+.rooms { overflow: clip; }
+.rooms__head { max-width: 44rem; margin-bottom: clamp(2.2rem, 5vw, 4rem); }
+.rooms__track { display: grid; gap: 1.2rem; }
+@media (min-width: 900px) {
+  .rooms__viewport { position: relative; }
+  .rooms__track { grid-auto-flow: column; grid-auto-columns: minmax(24rem, 36rem); gap: 1.4rem; width: max-content; padding-inline: var(--gutter); }
+}
+.room {
+  display: grid; align-content: space-between; gap: 2.2rem;
+  min-height: clamp(21rem, 46vh, 27rem);
+  padding: clamp(1.4rem, 2.6vw, 2rem);
+  border-radius: var(--radius-card);
+  background: var(--card); color: var(--ink);
+  border: 1px solid var(--line); box-shadow: var(--shadow-card);
+}
+.room--dark { background: var(--espresso); color: var(--paper); border-color: transparent; }
+.room--dark .room__note { color: var(--taupe); }
+.room--green { background: var(--green); color: var(--espresso); border-color: transparent; }
+.room--green .room__note { color: rgba(27, 20, 17, .75); }
+.room--navy { background: var(--navy); color: var(--band-ink); border-color: transparent; }
+.room--navy .room__note { color: var(--band-muted); }
+.room__role { font-size: clamp(1.5rem, 2.4vw, 2rem); font-weight: 600; letter-spacing: -.03em; line-height: 1.05; }
+.room__time { font-size: .8125rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; opacity: .7; margin-bottom: .7rem; }
+.room__note { font-size: .9375rem; color: var(--muted); margin-top: .8rem; max-width: 26em; }
+.room__chip {
+  justify-self: start; padding: .5rem .95rem; border-radius: .8rem;
+  background: color-mix(in srgb, currentColor 9%, transparent);
+  font-size: .875rem; font-weight: 600;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   12 · TESTIMONIALS — honest placeholder marquee
+   ══════════════════════════════════════════════════════════════════════════ */
+.voices__head { max-width: 44rem; margin-bottom: clamp(2.2rem, 5vw, 3.5rem); }
+.marquee {
+  position: relative; overflow: hidden; padding-block: .4rem;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.marquee + .marquee { margin-top: 1.2rem; }
+.marquee__row { display: flex; gap: 1.2rem; width: max-content; animation: slide var(--dur, 46s) linear infinite; }
+.marquee--rev .marquee__row { animation-direction: reverse; }
+.marquee:hover .marquee__row, .marquee:focus-within .marquee__row { animation-play-state: paused; }
+@keyframes slide { to { transform: translateX(calc(-50% - .6rem)); } }
+.quote {
+  display: grid; gap: .9rem; align-content: space-between;
+  width: min(21rem, 78vw); padding: 1.4rem;
+  border-radius: var(--radius-card); background: var(--card);
+  border: 1px dashed var(--line);
+}
+.quote__slot { font-weight: 500; color: var(--muted); font-style: italic; }
+.quote__slot b { color: var(--ink); font-style: normal; }
+.quote__who { display: flex; align-items: center; justify-content: space-between; gap: .8rem; }
+.quote__ph { font-size: .75rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--green-deep); }
+:root[data-theme="dark"] .quote__ph { color: var(--green); }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   13 · THREE STEPS — stacking cards
+   ══════════════════════════════════════════════════════════════════════════ */
+.steps__head { max-width: 44rem; margin-bottom: clamp(2.2rem, 5vw, 4rem); }
+.steps__stack { display: grid; gap: 1.4rem; }
+.step {
+  position: sticky; top: calc(var(--nav-h) + 1.2rem);
+  display: grid; gap: 1.4rem; align-items: center;
+  padding: clamp(1.5rem, 3.2vw, 2.4rem);
+  border-radius: var(--radius-band);
+  background: var(--card); border: 1px solid var(--line); box-shadow: var(--shadow-card);
+}
+@media (min-width: 800px) { .step { grid-template-columns: auto 1fr auto; } }
+.step:nth-child(2) { top: calc(var(--nav-h) + 2.2rem); background: var(--bg-soft); }
+.step:nth-child(3) { top: calc(var(--nav-h) + 3.2rem); background: var(--espresso); color: var(--paper); border-color: transparent; }
+.step:nth-child(3) .step__note { color: var(--taupe); }
+.step__num {
+  display: grid; place-items: center; width: 3.4rem; height: 3.4rem; border-radius: 50%;
+  background: var(--green); color: var(--espresso); font-size: 1.3rem; font-weight: 700;
+}
+.step__title { margin-bottom: .4rem; }
+.step__note { color: var(--muted); max-width: 44em; }
+.step__chip {
+  justify-self: start; padding: .55rem 1rem; border-radius: 1rem;
+  background: color-mix(in srgb, currentColor 8%, transparent);
+  font-size: .875rem; font-weight: 600; white-space: nowrap;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   14 · FAQ — native details with drawn plus
+   ══════════════════════════════════════════════════════════════════════════ */
+.faq { max-width: 52rem; }
+.faq__item { border-bottom: 1px solid var(--line); }
+.faq__item summary {
+  display: flex; align-items: center; justify-content: space-between; gap: 1.4rem;
+  padding: 1.35rem .2rem; cursor: pointer; list-style: none;
+  font-size: clamp(1.05rem, 1.6vw, 1.25rem); font-weight: 600; letter-spacing: -.02em;
+  border-radius: .4rem;
+}
+.faq__item summary::-webkit-details-marker { display: none; }
+.faq__icon {
+  position: relative; flex: none; width: 2.1rem; height: 2.1rem; border-radius: 50%;
+  border: 1.5px solid var(--line); transition: transform .35s ease, border-color .3s ease, background-color .3s ease;
+}
+.faq__icon::before, .faq__icon::after {
+  content: ""; position: absolute; inset: 50% 25% auto; height: 1.5px; border-radius: 2px;
+  background: currentColor; translate: 0 -50%; transition: rotate .35s ease;
+}
+.faq__icon::after { rotate: 90deg; }
+.faq__item[open] .faq__icon { transform: rotate(180deg); background: var(--green); border-color: transparent; color: var(--espresso); }
+.faq__item[open] .faq__icon::after { rotate: 0deg; }
+.faq__a {
+  display: grid; grid-template-rows: 0fr;
+  transition: grid-template-rows .45s cubic-bezier(.22, 1, .36, 1);
+}
+.faq__item[open] .faq__a { grid-template-rows: 1fr; }
+.faq__a > div { overflow: hidden; }
+.faq__a p { padding: 0 .2rem 1.5rem; color: var(--muted); max-width: 58ch; }
+</style>
+<style>
+/* ══════════════════════════════════════════════════════════════════════════
+   15 · CLOSING CTA — green bar wipe over the headline
+   ══════════════════════════════════════════════════════════════════════════ */
+.start { text-align: center; overflow: clip; }
+.start .t-h2 { max-width: 18em; margin-inline: auto; }
+.start .t-lead { max-width: 34em; margin: 1.2rem auto 0; }
+.start__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: .8rem; margin-top: 2.2rem; }
+.wipe { position: relative; display: inline-block; }
+.wipe::after {
+  content: ""; position: absolute; inset: -.04em -.06em;
+  background: var(--green); border-radius: .12em;
+  transform-origin: left center; transform: scaleX(var(--wipe, 0)); pointer-events: none;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   16 · CONTACT
+   ══════════════════════════════════════════════════════════════════════════ */
+.contact__grid { display: grid; gap: clamp(2rem, 4vw, 4rem); align-items: start; }
+@media (min-width: 900px) { .contact__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
+.contact__links { display: grid; gap: .8rem; margin-top: 2rem; }
+.contact__link {
+  display: flex; align-items: center; gap: .9rem; padding: 1rem 1.2rem;
+  border-radius: 1.2rem; background: var(--card); border: 1px solid var(--line);
+  font-weight: 600; transition: transform .25s ease, border-color .25s ease;
+}
+.contact__link:hover { transform: translateY(-2px); border-color: var(--green); }
+.contact__link svg { width: 1.35rem; height: 1.35rem; flex: none; color: var(--green-deep); }
+:root[data-theme="dark"] .contact__link svg { color: var(--green); }
+.contact__link span { display: grid; gap: .05rem; }
+.contact__link small { font-weight: 400; font-size: .8125rem; color: var(--muted); }
+.form {
+  padding: clamp(1.4rem, 3vw, 2.2rem); border-radius: var(--radius-card);
+  background: var(--card); border: 1px solid var(--line); box-shadow: var(--shadow-card);
+  display: grid; gap: 1.1rem;
+}
+.form label { display: grid; gap: .4rem; font-size: .9375rem; font-weight: 600; }
+.form input, .form textarea {
+  font: inherit; color: var(--ink); background: var(--bg-soft);
+  border: 1px solid var(--line-soft); border-radius: .9rem; padding: .8rem 1rem;
+  transition: border-color .2s ease, box-shadow .2s ease; width: 100%;
+}
+.form input:focus, .form textarea:focus {
+  outline: none; border-color: var(--green);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--green) 28%, transparent);
+}
+.form textarea { resize: vertical; min-height: 7.5rem; }
+.form .btn { justify-self: start; }
+.form__note { font-size: .8125rem; color: var(--muted); }
+.form__err { font-size: .8125rem; color: #c0392b; font-weight: 600; min-height: 1.2em; }
+:root[data-theme="dark"] .form__err { color: #ff8f7d; }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   17 · FOOTER
+   ══════════════════════════════════════════════════════════════════════════ */
+.foot { padding-top: var(--band-y); overflow: clip; }
+.foot__grid {
+  display: grid; gap: 2.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  padding-bottom: clamp(2rem, 5vw, 3.5rem);
+}
+.foot__brand p { color: var(--taupe); max-width: 22em; margin-top: .8rem; }
+.foot h3 { font-size: .8125rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--taupe); margin-bottom: 1rem; }
+.foot ul { display: grid; gap: .55rem; }
+.foot a { color: rgba(250, 245, 240, .85); }
+.foot a:hover { color: var(--green); }
+.foot__mark {
+  font-size: clamp(3.4rem, 14vw, 13rem); font-weight: 700; letter-spacing: -.05em; line-height: .9;
+  color: transparent; -webkit-text-stroke: 1.5px rgba(250, 245, 240, .34);
+  user-select: none; margin-bottom: -0.12em; white-space: nowrap;
+}
+.foot__legal {
+  display: flex; flex-wrap: wrap; gap: .6rem 1.6rem; justify-content: space-between;
+  padding-block: 1.4rem; border-top: 1px solid rgba(250, 245, 240, .14);
+  font-size: .8125rem; color: var(--taupe);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   18 · CURSOR + REVEAL INITIAL STATES
+   ══════════════════════════════════════════════════════════════════════════ */
+.cursor-dot, .cursor-ring {
+  position: fixed; top: 0; left: 0; z-index: 300; pointer-events: none;
+  border-radius: 50%; opacity: 0; transition: opacity .3s ease;
+}
+.cursor-dot { width: .45rem; height: .45rem; background: var(--green); margin: -.225rem 0 0 -.225rem; }
+.cursor-ring {
+  width: 2.4rem; height: 2.4rem; margin: -1.2rem 0 0 -1.2rem;
+  border: 1.5px solid color-mix(in srgb, var(--green) 70%, transparent);
+  transition: opacity .3s ease, width .25s ease, height .25s ease, margin .25s ease, border-color .25s ease, background-color .25s ease;
+}
+.cursor-ring.is-big {
+  width: 4rem; height: 4rem; margin: -2rem 0 0 -2rem;
+  background: color-mix(in srgb, var(--green) 12%, transparent);
+}
+html.has-cursor .cursor-dot, html.has-cursor .cursor-ring { opacity: 1; }
+html.has-cursor, html.has-cursor a, html.has-cursor button,
+html.has-cursor input, html.has-cursor textarea, html.has-cursor summary { cursor: none; }
+@media (pointer: coarse) { .cursor-dot, .cursor-ring { display: none; } }
+
+/* Progressive enhancement: only hide reveal targets when JS motion is ready */
+html.js-motion [data-reveal] { opacity: 0; }
+html.js-motion [data-reveal].is-in { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important; animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important; scroll-behavior: auto !important;
+  }
+  .marquee { overflow-x: auto; -webkit-mask-image: none; mask-image: none; }
+  .marquee__row { animation: none; }
+  .hero__scroll i::after { animation: none; }
+  html.js-motion [data-reveal] { opacity: 1; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- ══ NAV ══ -->
+<header class="nav" id="nav">
+  <div class="nav__bar">
+    <a class="nav__logo" href="#top" data-cursor>
+      <svg viewBox="0 0 64 64" aria-hidden="true">
+        <rect width="64" height="64" rx="18" fill="#33cc7a"/>
+        <path class="stroke" d="M20 42c4 3 9 4 14 3 6-1 9-4 9-8 0-5-5-7-12-9-6-2-9-3-9-7 0-3 3-6 9-6 4 0 8 1 11 3" fill="none" stroke="#1b1411" stroke-width="5" stroke-linecap="round"/>
+      </svg>
+      Shadrack
+    </a>
+    <nav class="nav__links" aria-label="Sections">
+      <a href="#how" data-cursor>How I work</a>
+      <a href="#projects" data-cursor>Projects</a>
+      <a href="#skills" data-cursor>Skills</a>
+      <a href="#stories" data-cursor>Stories</a>
+      <a href="#faq" data-cursor>Questions</a>
+      <a href="#contact" data-cursor>Contact</a>
+    </nav>
+    <div class="nav__right">
+      <button class="nav__toggle" type="button" data-theme-toggle data-cursor aria-label="Switch colour theme">
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5 5l1.4 1.4M17.6 17.6L19 19M19 5l-1.4 1.4M6.4 17.6L5 19"/>
+        </svg>
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M20 13.5A8.5 8.5 0 0 1 10.5 4 8.5 8.5 0 1 0 20 13.5Z"/>
+        </svg>
+      </button>
+      <a class="btn btn--sm" href="#contact" data-cursor data-magnetic>Hire me</a>
+      <button class="nav__burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="Open menu"><span></span></button>
+    </div>
+  </div>
+</header>
+<div class="menu" id="menu" hidden>
+  <nav aria-label="Menu">
+    <ul>
+      <li><a href="#how">How I work</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#stories">Stories</a></li>
+      <li><a href="#faq">Questions</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a class="btn" href="#contact">Hire me</a>
+  </nav>
+</div>
+
+<main id="main">
+
+<!-- ══ HERO ══ -->
+<section class="hero" id="top">
+  <div class="hero__photo" id="heroPhoto" aria-hidden="true"></div>
+  <div class="hero__veil" aria-hidden="true"></div>
+
+  <div class="bubbles" aria-hidden="true">
+    <div class="bubble" data-bubble>
+      <span class="wave"><i></i><i></i><i></i><i></i><i></i></span>
+      Can you build my safari site?
+    </div>
+    <div class="bubble bubble--me" data-bubble>
+      Live in days. Sending the link.
+    </div>
+    <div class="bubble" data-bubble>
+      Perfect. I’ll bring the brief.
+    </div>
+  </div>
+
+  <div class="wrap hero__inner">
+    <h1 class="t-display hero__title" data-split data-reveal>Websites that sell. Pages that grow. Customers who stay.</h1>
+    <p class="t-lead hero__sub" data-reveal>I’m Shadrack — full stack developer, social media manager and front office pro in Mombasa. Three finished websites are live and for sale today.</p>
+    <div class="hero__actions" data-reveal>
+      <a class="btn" href="#projects" data-cursor data-magnetic>
+        <span class="btn__bars" aria-hidden="true"><i></i><i></i><i></i></span>
+        See sites for sale
+      </a>
+      <a class="btn btn--ghost" href="#" data-wa data-cursor data-magnetic>Message me on WhatsApp</a>
+    </div>
+    <ul class="hero__trust" id="trustRow" data-reveal>
+      <!-- filled from the SITE config -->
+    </ul>
+  </div>
+
+  <div class="hero__scroll" aria-hidden="true">Scroll<i></i></div>
+</section>
+<!-- ══ STATEMENT · YOU ASK / I DELIVER ══ -->
+<section class="band round-top how" id="how">
+  <div class="wrap">
+    <div class="how__head">
+      <p class="eyebrow" data-reveal>How I work</p>
+      <h2 class="t-h2" data-split data-reveal>Nothing lost between a brief and a build.</h2>
+      <p class="t-lead" data-reveal style="margin-top:1.2rem">No gaps, no guessing, no asking twice. You tell me what the business needs; I send back something you can click, share and sell with.</p>
+    </div>
+    <div class="how__stage" id="howStage">
+      <div class="how__col">
+        <p class="how__label">You ask</p>
+        <p class="say" data-ask>I need a site for my safari business.</p>
+        <p class="say" data-ask>Can my manager update it later?</p>
+        <p class="say" data-ask>Will it work on cheap phones?</p>
+      </div>
+      <div class="how__mid" aria-hidden="true"></div>
+      <div class="how__col">
+        <p class="how__label">I deliver</p>
+        <p class="say say--answer" data-deliver>A live link in days, not months.</p>
+        <p class="say say--answer" data-deliver>Yes — plus the source code and a handover call.</p>
+        <p class="say say--answer" data-deliver>Built mobile-first, tested on real networks.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PROJECTS ══ -->
+<section class="band band--soft" id="projects">
+  <div class="wrap">
+    <div class="work__head">
+      <p class="eyebrow" data-reveal>Sites for sale</p>
+      <h2 class="t-h2" data-split data-reveal>Three finished websites. One could be yours.</h2>
+      <p class="t-lead" data-reveal style="margin-top:1.2rem">Every site is live, working and ready to hand to your engineer. Open it, poke it, then message me and name your price.</p>
+    </div>
+
+    <div class="work__grid">
+      <div class="work__stick">
+        <div class="browser" id="mockBrowser" data-tilt>
+          <div class="browser__bar">
+            <span class="browser__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span class="browser__url t-mono" id="mockUrl">bahariasilisafaris.vercel.app</span>
+          </div>
+          <div class="browser__view" id="mockView" role="img" aria-label="Live preview of the selected site">
+            <!-- screenshots injected from the SITE config -->
+          </div>
+        </div>
+      </div>
+
+      <div class="work__list" id="siteList">
+        <!-- project cards injected from the SITE config -->
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ══ SKILLS · SETTINGS PANEL ══ -->
+<section class="band" id="skills">
+  <div class="wrap">
+    <div class="skills__head">
+      <p class="eyebrow" data-reveal>What I bring</p>
+      <h2 class="t-h2" data-split data-reveal>Set the dials. See what you get.</h2>
+      <p class="t-lead" data-reveal style="margin-top:1.2rem">Five skills, one person. Flip them on or off and watch the preview change — that’s how I scope a project with you.</p>
+    </div>
+
+    <div class="skills__grid">
+      <div class="panel" data-reveal>
+        <div class="panel__row">
+          <label for="pvSize">Text size <output id="pvSizeOut">Medium</output></label>
+          <input type="range" id="pvSize" min="0" max="3" step="1" value="1" data-cursor>
+        </div>
+        <div class="panel__row">
+          <label for="pvWeight">Weight <output id="pvWeightOut">Semibold</output></label>
+          <input type="range" id="pvWeight" min="300" max="800" step="100" value="600" data-cursor>
+        </div>
+        <div class="panel__row">
+          <label for="pvMotion">Motion <output id="pvMotionOut">Calm</output></label>
+          <input type="range" id="pvMotion" min="0" max="2" step="1" value="1" data-cursor>
+        </div>
+        <div class="panel__row">
+          <p class="panel__legend" id="themeLabel">Theme <output>Live — changes this whole page</output></p>
+          <div class="seg" role="group" aria-labelledby="themeLabel">
+            <button type="button" data-theme-set="light" aria-pressed="true" data-cursor>Light</button>
+            <button type="button" data-theme-set="dark" aria-pressed="false" data-cursor>Dark</button>
+          </div>
+        </div>
+        <div class="panel__skills" id="skillList">
+          <div class="skill" data-skill="front">
+            <span><span class="skill__name">Front end</span><br><span class="skill__note">HTML, CSS, JavaScript, React</span></span>
+            <button class="switch" type="button" role="switch" aria-checked="true" aria-label="Include front end" data-cursor></button>
+          </div>
+          <div class="skill" data-skill="back">
+            <span><span class="skill__name">Back end</span><br><span class="skill__note">APIs, databases, auth, hosting</span></span>
+            <button class="switch" type="button" role="switch" aria-checked="true" aria-label="Include back end" data-cursor></button>
+          </div>
+          <div class="skill" data-skill="social">
+            <span><span class="skill__name">Social media</span><br><span class="skill__note">Calendars, captions, short video</span></span>
+            <button class="switch" type="button" role="switch" aria-checked="true" aria-label="Include social media" data-cursor></button>
+          </div>
+          <div class="skill" data-skill="support">
+            <span><span class="skill__name">Customer service</span><br><span class="skill__note">Inboxes, WhatsApp, bookings</span></span>
+            <button class="switch" type="button" role="switch" aria-checked="true" aria-label="Include customer service" data-cursor></button>
+          </div>
+          <div class="skill" data-skill="motion">
+            <span><span class="skill__name">UI motion</span><br><span class="skill__note">Scroll scenes, micro-interactions</span></span>
+            <button class="switch" type="button" role="switch" aria-checked="true" aria-label="Include UI motion" data-cursor></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="preview" data-reveal>
+        <p class="preview__bar">
+          <span class="browser__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          Live preview · what you’re buying
+        </p>
+        <div class="preview__card" id="previewCard">
+          <p class="preview__line" id="previewLine">Built to sell on any screen.</p>
+          <div class="preview__chats" id="previewChats" aria-hidden="true">
+            <p class="preview__bubble">Hi — how much for a site like this?</p>
+            <p class="preview__bubble preview__bubble--me">Enough to be taken seriously. Less than you fear.</p>
+          </div>
+          <div class="preview__tags" id="previewTags">
+            <!-- tags filtered by the switches -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ IN THE ROOM ══ -->
+<section class="band band--espresso rooms" id="stories">
+  <div class="wrap">
+    <div class="rooms__head">
+      <p class="eyebrow" data-reveal>In the room</p>
+      <h2 class="t-h2" data-split data-reveal>Three jobs, one work ethic.</h2>
+      <p class="t-lead" data-reveal style="margin-top:1.2rem">By day I run desks and inboxes. By night I ship sites. Same person, same care.</p>
+    </div>
+  </div>
+  <div class="rooms__viewport" id="roomsViewport">
+    <div class="rooms__track" id="roomsTrack">
+      <article class="room room--green" data-reveal>
+        <header>
+          <p class="room__time">The 5 to 9</p>
+          <h3 class="room__role">Developer</h3>
+          <p class="room__note">I build the site, wire the enquiry forms to WhatsApp, and leave your engineer a repo they can pick up without calling me twice.</p>
+        </header>
+        <p class="room__chip">Shipped: Bahari Asili, Foundora, Olitech</p>
+      </article>
+      <article class="room room--navy" data-reveal>
+        <header>
+          <p class="room__time">The 5 to 9</p>
+          <h3 class="room__role">Social media manager</h3>
+          <p class="room__note">I plan the month, write captions in the brand’s own voice, edit the short videos and report what actually moved.</p>
+        </header>
+        <p class="room__chip">Example: a launch week calendar, ready to post</p>
+      </article>
+      <article class="room" data-reveal>
+        <header>
+          <p class="room__time">The 9 to 5</p>
+          <h3 class="room__role">Front desk &amp; customer support</h3>
+          <p class="room__note">I answer guests all shift — WhatsApp, calls, walk-ins — then turn the repeat questions into an FAQ so nobody asks twice.</p>
+        </header>
+        <p class="room__chip">Example: the FAQ you’re reading below</p>
+      </article>
+    </div>
+  </div>
+</section>
+<!-- ══ TESTIMONIALS ══ -->
+<section class="band voices" id="voices">
+  <div class="wrap">
+    <div class="voices__head">
+    <p class="eyebrow" data-reveal>Kind words</p>
+    <h2 class="t-h2" data-split data-reveal>Real quotes only. These slots stay empty until they are.</h2>
+    <p class="t-lead" data-reveal style="margin-top:1.2rem">I don’t invent reviews. If you’ve worked with me and want a line here, send it on WhatsApp — first name or initials, your call.</p>
+    </div>
+  </div>
+  <div class="marquee" data-reveal>
+    <div class="marquee__row" style="--dur:52s">
+      <figure class="quote"><blockquote class="quote__slot">“<b>[A line a client actually said]</b> — keep it short and specific.”</blockquote><figcaption class="quote__who"><span class="t-cap">[First name or initials] · [role, company]</span><span class="quote__ph">placeholder</span></figcaption></figure>
+      <figure class="quote"><blockquote class="quote__slot">“<b>[What surprised them]</b> — delivery speed, handover, support?”</blockquote><figcaption class="quote__who"><span class="t-cap">[First name or initials] · [role, company]</span><span class="quote__ph">placeholder</span></figcaption></figure>
+      <figure class="quote"><blockquote class="quote__slot">“<b>[The outcome they got]</b> — more bookings, fewer calls, calmer team?”</blockquote><figcaption class="quote__who"><span class="t-cap">[First name or initials] · [role, company]</span><span class="quote__ph">placeholder</span></figcaption></figure>
+      <figure class="quote"><blockquote class="quote__slot">“<b>[A line a client actually said]</b> — keep it short and specific.”</blockquote><figcaption class="quote__who"><span class="t-cap">[First name or initials] · [role, company]</span><span class="quote__ph">placeholder</span></figcaption></figure>
+      <figure class="quote"><blockquote class="quote__slot">“<b>[What surprised them]</b> — delivery speed, handover, support?”</blockquote><figcaption class="quote__who"><span class="t-cap">[First name or initials] · [role, company]</span><span class="quote__ph">placeholder</span></figcaption></figure>
+      <figure class="quote"><blockquote class="quote__slot">“<b>[The outcome they got]</b> — more bookings, fewer calls, calmer team?”</blockquote><figcaption class="quote__who"><span class="t-cap">[First name or initials] · [role, company]</span><span class="quote__ph">placeholder</span></figcaption></figure>
+    </div>
+  </div>
+  <div class="marquee marquee--rev" data-reveal>
+    <div class="marquee__row" style="--dur:64s">
+      <figure class="quote"><blockquote class="quote__slot">“<b>[How the handover went]</b> — did your engineer get everything?”</blockquote><figcaption class="quote__who"><span class="t-cap">[First name or initials] · [role, company]</span><span class="quote__ph">placeholder</span></figcaption></figure>
+      <figure class="quote"><blockquote class="quote__slot">“<b>[Working style in one line]</b> — clear, fast, no drama?”</blockquote><figcaption class="quote__who"><span class="t-cap">[First name or initials] · [role, company]</span><span class="quote__ph">placeholder</span></figcaption></figure>
+      <figure class="quote"><blockquote class="quote__slot">“<b>[Would you hire me again?]</b> — yes, and why.”</blockquote><figcaption class="quote__who"><span class="t-cap">[First name or initials] · [role, company]</span><span class="quote__ph">placeholder</span></figcaption></figure>
+      <figure class="quote"><blockquote class="quote__slot">“<b>[How the handover went]</b> — did your engineer get everything?”</blockquote><figcaption class="quote__who"><span class="t-cap">[First name or initials] · [role, company]</span><span class="quote__ph">placeholder</span></figcaption></figure>
+      <figure class="quote"><blockquote class="quote__slot">“<b>[Working style in one line]</b> — clear, fast, no drama?”</blockquote><figcaption class="quote__who"><span class="t-cap">[First name or initials] · [role, company]</span><span class="quote__ph">placeholder</span></figcaption></figure>
+      <figure class="quote"><blockquote class="quote__slot">“<b>[Would you hire me again?]</b> — yes, and why.”</blockquote><figcaption class="quote__who"><span class="t-cap">[First name or initials] · [role, company]</span><span class="quote__ph">placeholder</span></figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- ══ THREE STEPS ══ -->
+<section class="band band--soft" id="steps">
+  <div class="wrap">
+    <div class="steps__head">
+      <p class="eyebrow" data-reveal>Buying a site</p>
+      <h2 class="t-h2" data-split data-reveal>Three steps, then it’s yours.</h2>
+    </div>
+    <ol class="steps__stack">
+      <li class="step" data-step>
+        <span class="step__num" aria-hidden="true">1</span>
+        <div><h3 class="t-h3 step__title">Try it live</h3><p class="step__note">Open the site and click everything — on your phone, on your laptop. If it fits your business, keep going. If not, no hard feelings.</p></div>
+        <span class="step__chip">Live link, no login</span>
+      </li>
+      <li class="step" data-step>
+        <span class="step__num" aria-hidden="true">2</span>
+        <div><h3 class="t-h3 step__title">Message me</h3><p class="step__note">Tell me which site and what you’d like changed. We agree on a price and a handover date. I reply within 24 hours.</p></div>
+        <span class="step__chip">WhatsApp, in writing</span>
+      </li>
+      <li class="step" data-step>
+        <span class="step__num" aria-hidden="true">3</span>
+        <div><h3 class="t-h3 step__title">Hand it to your engineer</h3><p class="step__note">Your engineer gets the repository, the run notes and a walkthrough call if they want one. Then it’s fully yours.</p></div>
+        <span class="step__chip">repo + README + call</span>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ══ FAQ ══ -->
+<section class="band" id="faq">
+  <div class="wrap">
+    <div class="steps__head">
+      <p class="eyebrow" data-reveal>Questions</p>
+      <h2 class="t-h2" data-split data-reveal>Questions, answered plainly.</h2>
+      <p class="t-lead" data-reveal style="margin-top:1.2rem">Still wondering something? Ask a person — I reply within a day.</p>
+    </div>
+    <div class="faq" data-reveal>
+      <details class="faq__item">
+        <summary>What exactly is included?<span class="faq__icon" aria-hidden="true"></span></summary>
+        <div class="faq__a"><div><p>The live site as you see it, the full source code in a Git repository, the build and run notes, and a set-up guide for the domain and hosting. If you want changes before handover — your logo, your copy, your colours — say so and we’ll price them in.</p></div></div>
+      </details>
+      <details class="faq__item">
+        <summary>How do domain and hosting transfer?<span class="faq__icon" aria-hidden="true"></span></summary>
+        <div class="faq__a"><div><p>The sites currently live on my Vercel accounts. Transfer means inviting your account (or your engineer’s) and pointing your domain at it — usually under an hour of work. I stay on WhatsApp until it’s done and the site is loading on your name.</p></div></div>
+      </details>
+      <details class="faq__item">
+        <summary>Do I get the source code?<span class="faq__icon" aria-hidden="true"></span></summary>
+        <div class="faq__a"><div><p>Yes — all of it, with commit history. No lock-in, no hidden files kept back. Once it’s handed over, your engineer can change anything without asking me.</p></div></div>
+      </details>
+      <details class="faq__item">
+        <summary>Is handover support included?<span class="faq__icon" aria-hidden="true"></span></summary>
+        <div class="faq__a"><div><p>Yes. A walkthrough call for you or your engineer, written notes, and WhatsApp follow-up questions for two weeks after handover. If your engineer needs more time, we can agree extra at an hourly rate.</p></div></div>
+      </details>
+      <details class="faq__item">
+        <summary>How does payment work?<span class="faq__icon" aria-hidden="true"></span></summary>
+        <div class="faq__a"><div><p>We agree a price first, in writing on WhatsApp. Half up front, half when you’re happy and the transfer is done. M-Pesa or bank transfer, receipt every time. No subscription, no monthly fee owed to me.</p></div></div>
+      </details>
+      <details class="faq__item">
+        <summary>Can you customise a site for my business?<span class="faq__icon" aria-hidden="true"></span></summary>
+        <div class="faq__a"><div><p>That’s the usual route. New name, new colours, your services and prices, your photos, your booking flow — I can reshape any of the three to fit your business before handover, or build something new from scratch. Ask and I’ll quote.</p></div></div>
+      </details>
+    </div>
+  </div>
+</section>
+<!-- ══ CLOSING CTA ══ -->
+<section class="band band--navy start" id="start">
+  <div class="wrap">
+    <h2 class="t-h2" data-wipe>Your next website can be the easy one.</h2>
+    <p class="t-lead" data-reveal>Three sites are live right now. Pick one, send a message, and it can be on your domain this week.</p>
+    <div class="start__actions" data-reveal>
+      <a class="btn" href="#" data-wa data-cursor data-magnetic>
+        <span class="btn__bars" aria-hidden="true"><i></i><i></i><i></i></span>
+        Message me on WhatsApp
+      </a>
+      <a class="btn btn--ghost" href="#projects" data-cursor data-magnetic>See sites for sale</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CONTACT ══ -->
+<section class="band" id="contact">
+  <div class="wrap contact__grid">
+    <div>
+      <p class="eyebrow" data-reveal>Contact</p>
+      <h2 class="t-h2" data-split data-reveal>Talk to a person, any way you like.</h2>
+      <p class="t-lead" data-reveal style="margin-top:1.2rem">I read everything myself and reply within a day — usually much sooner, Mombasa time.</p>
+      <div class="contact__links" data-reveal>
+        <a class="contact__link" href="#" data-wa data-cursor>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20.5l1.7-5.2A8.5 8.5 0 1 1 21 11.5Z"/><path d="M8.8 9.2c.3 2.7 2.3 4.7 5 5l1.2-1.2c.2-.2.4-.2.6-.1l1.9.8c.2.1.3.3.3.5v1.4c0 .9-.8 1.6-1.7 1.5-4.6-.4-8.3-4.1-8.7-8.7 0-.9.6-1.7 1.5-1.7h1.4c.2 0 .4.1.5.3l.8 1.9c.1.2 0 .4-.1.6l-1.2 1.2" opacity=".55"/></svg>
+          <span>WhatsApp <small id="waDisplay">+254 745 043 121</small></span>
+        </a>
+        <a class="contact__link" id="mailLink" href="#" data-cursor>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg>
+          <span>Email <small id="mailDisplay">sheddymae02@gmail.com</small></span>
+        </a>
+        <p class="contact__link" style="cursor:default">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z"/><circle cx="12" cy="10" r="2.6"/></svg>
+          <span>Mombasa, Kenya <small>Mon–Sat, mornings to late</small></span>
+        </p>
+      </div>
+    </div>
+
+    <form class="form" id="waForm" novalidate data-reveal>
+      <label for="fName">Your name
+        <input id="fName" name="name" type="text" autocomplete="name" required placeholder="Amina">
+      </label>
+      <label for="fEmail">Your email
+        <input id="fEmail" name="email" type="email" autocomplete="email" required placeholder="you@company.com">
+      </label>
+      <label for="fMsg">What do you need?
+        <textarea id="fMsg" name="message" rows="4" required placeholder="I’d like to talk about the Bahari site…"></textarea>
+      </label>
+      <p class="form__err" id="formErr" role="alert" aria-live="polite"></p>
+      <button class="btn" type="submit" data-cursor data-magnetic>
+        <span class="btn__bars" aria-hidden="true"><i></i><i></i><i></i></span>
+        Send on WhatsApp
+      </button>
+      <p class="form__note">This opens WhatsApp with your message ready to send — nothing is stored on this page. Prefer email? Use the link above.</p>
+    </form>
+  </div>
+</section>
+</main>
+
+<!-- ══ FOOTER ══ -->
+<footer class="band band--espresso foot" id="foot">
+  <div class="wrap">
+    <div class="foot__grid">
+      <div class="foot__brand">
+        <a class="nav__logo" href="#top" data-cursor>
+          <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="18" fill="#33cc7a"/><path d="M20 42c4 3 9 4 14 3 6-1 9-4 9-8 0-5-5-7-12-9-6-2-9-3-9-7 0-3 3-6 9-6 4 0 8 1 11 3" fill="none" stroke="#1b1411" stroke-width="5" stroke-linecap="round"/></svg>
+          Shadrack
+        </a>
+        <p>Websites that sell. Pages that grow. Customers who stay. Built in Mombasa, handed over anywhere.</p>
+      </div>
+      <div>
+        <h3>Sites for sale</h3>
+        <ul id="footSites">
+          <!-- filled from the SITE config -->
+        </ul>
+      </div>
+      <div>
+        <h3>Contact</h3>
+        <ul>
+          <li><a href="#" data-wa>WhatsApp</a></li>
+          <li><a id="footMail" href="#">Email</a></li>
+          <li><a href="#contact">Hire me</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Pages</h3>
+        <ul>
+          <li><a href="#how">How I work</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#stories">Stories</a></li>
+          <li><a href="#faq">Questions</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="foot__mark" id="footMark" aria-hidden="true">Shadrack</p>
+  </div>
+  <div class="wrap foot__legal">
+    <p>© <span id="year">2026</span> Shadrack Safari · Mombasa, Kenya</p>
+    <p>Layout based on the Linea template by 8B (MIT licence). Host Grotesk, GSAP.</p>
+  </div>
+</footer>
+
+<div class="cursor-dot" aria-hidden="true"></div>
+<div class="cursor-ring" aria-hidden="true"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.11/dist/lenis.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+/* ══════════════════════════════════════════════════════════════════════════
+   ▼▼▼  SITE CONFIG — edit everything below  ▼▼▼
+   Name, email, WhatsApp, roles and the three projects all live here.
+   ══════════════════════════════════════════════════════════════════════════ */
+const SITE = {
+  name: "Shadrack Safari",
+  shortName: "Shadrack",
+  role: "Full stack developer · Social media manager · Front office & customer support",
+  location: "Mombasa, Kenya",
+  email: "sheddymae02@gmail.com",
+  whatsapp: "254745043121",          // digits only, for wa.me links
+  whatsappDisplay: "+254 745 043 121",
+  heroPhoto: "assets/hero.jpg",       // optional — drop a wide photo here
+  greeting: "Hi Shadrack, I found your portfolio.",
+
+  trust: [
+    { value: "3",      label: "live sites, for sale" },
+    { value: "3",      label: "skill areas in one person" },
+    { value: "24h",    label: "reply, every time" }
+  ],
+
+  projects: [
+    {
+      id: "bahari",
+      name: "Bahari Asili Safaris",
+      kind: "Tours & safaris",
+      url: "https://bahariasilisafaris.vercel.app/",
+      shot: "assets/shots/bahari.jpg",
+      blurb: "A safari business online: destinations, excursions, a build-your-safari flow and enquiries that land straight in the owner’s WhatsApp.",
+      features: ["Tour & destination pages", "Enquiry flow to WhatsApp", "Fast on mobile networks"]
+    },
+    {
+      id: "foundora",
+      name: "Foundora",
+      kind: "Modern business website",
+      url: "https://foundora-si.vercel.app/",
+      shot: "assets/shots/foundora.jpg",
+      blurb: "A clean, modern company site — positioning, services, story and a contact path that a small team can actually keep up with.",
+      features: ["Services & story pages", "Contact & enquiry section", "Easy to rebrand"]
+    },
+    {
+      id: "olitech",
+      name: "Olitech PMS and POS",
+      kind: "Management & point-of-sale app",
+      url: "https://olitechpmspos.vercel.app/",
+      shot: "assets/shots/olitech.jpg",
+      blurb: "Hospitality software: rooms, bookings, point of sale and billing in one system built for Kenyan businesses, with M-Pesa in the flow.",
+      features: ["Room planner & front desk", "POS & billing", "M-Pesa-ready flow"]
+    }
+  ],
+
+  skillTags: {
+    front:   ["HTML & CSS", "JavaScript", "React & Next.js", "responsive layouts"],
+    back:    ["APIs & databases", "auth", "Vercel hosting", "WhatsApp integrations"],
+    social:  ["content calendars", "captions & hashtags", "short video edits", "monthly insights"],
+    support: ["inbox & WhatsApp replies", "booking questions", "calm escalation", "clear written English"],
+    motion:  ["GSAP scroll scenes", "micro-interactions", "reduced-motion support"]
+  }
+};
+/* ▲▲▲  END CONFIG  ▲▲▲ */
+
+const $  = (s, c) => (c || document).querySelector(s);
+const $$ = (s, c) => Array.from((c || document).querySelectorAll(s));
+const prefersReduced = matchMedia("(prefers-reduced-motion: reduce)");
+const finePointer   = matchMedia("(hover: hover) and (pointer: fine)");
+
+const waURL = (text) =>
+  "https://wa.me/" + SITE.whatsapp + "?text=" + encodeURIComponent(text || SITE.greeting);
+
+/* ── Theme: device default, toggle remembers the choice ── */
+const root = document.documentElement;
+const setTheme = (theme, remember) => {
+  root.dataset.theme = theme;
+  if (remember) { try { localStorage.setItem("shadrack-theme", theme); } catch (e) {} }
+  $$('[data-theme-toggle]').forEach(b =>
+    b.setAttribute("aria-label", theme === "dark" ? "Switch to light theme" : "Switch to dark theme"));
+  $$('[data-theme-set]').forEach(b =>
+    b.setAttribute("aria-pressed", String(b.dataset.themeSet === theme)));
+};
+setTheme(root.dataset.theme || "light", false);
+$$('[data-theme-toggle]').forEach(b =>
+  b.addEventListener("click", () => setTheme(root.dataset.theme === "dark" ? "light" : "dark", true)));
+$$('[data-theme-set]').forEach(b =>
+  b.addEventListener("click", () => setTheme(b.dataset.themeSet, true)));
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
+  let saved = null; try { saved = localStorage.getItem("shadrack-theme"); } catch (err) {}
+  if (!saved) setTheme(e.matches ? "dark" : "light", false);
+});
+
+/* ── Fill every WhatsApp / email link from the config ── */
+$$('[data-wa]').forEach(a => {
+  a.href = waURL(a.dataset.wa || SITE.greeting);
+  a.target = "_blank"; a.rel = "noopener";
+});
+$("#waDisplay").textContent = SITE.whatsappDisplay;
+$("#mailDisplay").textContent = SITE.email;
+$("#mailLink").href = "mailto:" + SITE.email;
+$("#footMail").href = "mailto:" + SITE.email;
+$("#footMail").textContent = SITE.email;
+$("#year").textContent = new Date().getFullYear();
+
+/* ── Hero photo (falls back to the painted gradient) ── */
+if (SITE.heroPhoto) {
+  const probe = new Image();
+  probe.onload = () => {
+    const el = $("#heroPhoto");
+    el.style.backgroundImage = "linear-gradient(180deg, rgba(15,28,42,.35), rgba(15,28,42,.55)), url('" + SITE.heroPhoto + "')";
+  };
+  probe.src = SITE.heroPhoto;
+}
+
+/* ── Trust row ── */
+$("#trustRow").innerHTML = SITE.trust.map(t =>
+  '<li><b>' + t.value + '</b><span>' + t.label + '</span></li>').join("");
+
+/* ── Projects: cards + sticky browser shots ── */
+const siteList = $("#siteList");
+siteList.innerHTML = SITE.projects.map((p, i) => {
+  const host = new URL(p.url).hostname;
+  return '' +
+  '<article class="site" id="site-' + p.id + '" data-site-index="' + i + '" data-tilt>' +
+    '<div class="site__top">' +
+      '<span class="tag tag--sale">For sale</span>' +
+      '<span class="site__kind">' + p.kind + '</span>' +
+    '</div>' +
+    '<h3 class="t-h3 site__name">' + p.name + '</h3>' +
+    '<p class="site__blurb">' + p.blurb + '</p>' +
+    '<ul class="site__feats">' + p.features.map(f => '<li class="tag">' + f + '</li>').join("") + '</ul>' +
+    '<div class="site__actions">' +
+      '<a class="btn btn--sm" href="' + p.url + '" target="_blank" rel="noopener" data-cursor data-magnetic>Open live site<span class="vh"> (opens in a new tab): ' + p.name + '</span></a>' +
+      '<a class="btn btn--sm btn--ink" href="' + waURL("Hi Shadrack, I want to buy " + p.name + ". Is it still available?") + '" target="_blank" rel="noopener" data-cursor data-magnetic>Buy this<span class="vh"> ' + p.name + ' on WhatsApp</span></a>' +
+      '<span class="t-cap t-mono" style="align-self:center">' + host + '</span>' +
+    '</div>' +
+  '</article>';
+}).join("");
+
+$("#mockView").innerHTML = SITE.projects.map((p, i) =>
+  '<img src="' + p.shot + '" alt="" class="' + (i === 0 ? "is-active" : "") + '" loading="lazy" width="1600" height="1000">'
+).join("");
+
+const mockImgs = $$("#mockView img");
+const siteCards = $$(".site", siteList);
+let activeSite = -1;
+const activateSite = (i) => {
+  if (i === activeSite || !SITE.projects[i]) return;
+  activeSite = i;
+  mockImgs.forEach((img, n) => img.classList.toggle("is-active", n === i));
+  siteCards.forEach((c, n) => c.classList.toggle("is-active", n === i));
+  const host = new URL(SITE.projects[i].url).hostname;
+  const urlEl = $("#mockUrl");
+  urlEl.textContent = host;
+  if (window.gsap && !prefersReduced.matches) {
+    gsap.fromTo(urlEl, { y: 6, opacity: 0 }, { y: 0, opacity: 1, duration: .35, ease: "power2.out" });
+  }
+};
+activateSite(0);
+
+/* ── Footer site links ── */
+$("#footSites").innerHTML = SITE.projects.map(p =>
+  '<li><a href="' + p.url + '" target="_blank" rel="noopener">' + p.name + '</a></li>').join("");
+</script>
+<script>
+/* ══════════════════════════════════════════════════════════════════════════
+   SKILLS PANEL — the dials drive the live preview
+   ══════════════════════════════════════════════════════════════════════════ */
+(function () {
+  const previewCard = $("#previewCard");
+  const sizes  = ["Small", "Medium", "Large", "Extra large"];
+  const sizePx = ["1.2rem", "1.6rem", "2.1rem", "2.7rem"];
+  const motionNames = ["Calm", "Steady", "Playful"];
+
+  const paint = (input) => {
+    const min = +input.min, max = +input.max, val = +input.value;
+    input.style.setProperty("--fill", ((val - min) / (max - min) * 100) + "%");
+  };
+
+  const size = $("#pvSize"), weight = $("#pvWeight"), motion = $("#pvMotion");
+
+  const applySize = () => {
+    previewCard.style.setProperty("--pv-size", sizePx[+size.value]);
+    $("#pvSizeOut").textContent = sizes[+size.value];
+    paint(size);
+  };
+  const applyWeight = () => {
+    previewCard.style.setProperty("--pv-weight", weight.value);
+    $("#pvWeightOut").textContent =
+      ({ 300: "Light", 400: "Regular", 500: "Medium", 600: "Semibold", 700: "Bold", 800: "Black" })[weight.value] || weight.value;
+    paint(weight);
+  };
+  const applyMotion = () => {
+    $("#pvMotionOut").textContent = motionNames[+motion.value];
+    paint(motion);
+    const bubbles = $$(".preview__bubble", previewCard);
+    bubbles.forEach(b => { if (b._loop) { b._loop.kill(); b._loop = null; } });
+    if (prefersReduced.matches || !window.gsap) return;
+    const speed = [2.8, 1.8, 1.1][+motion.value];
+    bubbles.forEach((b, i) => {
+      b._loop = gsap.fromTo(b, { y: 10, opacity: 0 },
+        { y: 0, opacity: 1, duration: speed / 2, delay: i * speed / 3, ease: "power2.out", repeat: -1, repeatDelay: speed });
+    });
+  };
+  [size, weight, motion].forEach(i => i.addEventListener("input", () => {
+    i === size ? applySize() : i === weight ? applyWeight() : applyMotion();
+  }));
+  applySize(); applyWeight(); applyMotion();
+
+  /* Skill switches filter the preview tags */
+  const tagsWrap = $("#previewTags");
+  const renderTags = () => {
+    const on = $$(".switch[aria-checked='true']", $("#skillList")).map(s => s.closest("[data-skill]").dataset.skill);
+    const tags = on.flatMap(k => SITE.skillTags[k] || []);
+    tagsWrap.innerHTML = tags.length
+      ? tags.map(t => '<span class="tag">' + t + '</span>').join("")
+      : '<span class="tag">Nothing selected — switch a skill on</span>';
+    if (window.gsap && !prefersReduced.matches) {
+      gsap.fromTo(tagsWrap.children, { y: 8, opacity: 0 }, { y: 0, opacity: 1, duration: .4, stagger: .04, ease: "power2.out" });
+    }
+  };
+  $$(".switch", $("#skillList")).forEach(sw => {
+    sw.addEventListener("click", () => {
+      sw.setAttribute("aria-checked", sw.getAttribute("aria-checked") === "true" ? "false" : "true");
+      renderTags();
+    });
+  });
+  renderTags();
+})();
+
+/* ══════════════════════════════════════════════════════════════════════════
+   NAV — hide on scroll down, mobile menu, active section
+   ══════════════════════════════════════════════════════════════════════════ */
+(function () {
+  const nav = $("#nav");
+  let lastY = scrollY;
+  addEventListener("scroll", () => {
+    const y = scrollY;
+    nav.classList.toggle("is-hidden", y > 140 && y > lastY && !$("#menu").classList.contains("is-open"));
+    lastY = y;
+  }, { passive: true });
+
+  const burger = $(".nav__burger"), menu = $("#menu");
+  const closeMenu = () => {
+    burger.setAttribute("aria-expanded", "false");
+    menu.classList.remove("is-open");
+    setTimeout(() => { menu.hidden = true; }, 350);
+    if (window.lenis) window.lenis.start();
+  };
+  burger.addEventListener("click", () => {
+    const open = burger.getAttribute("aria-expanded") === "true";
+    if (open) { closeMenu(); return; }
+    menu.hidden = false;
+    requestAnimationFrame(() => menu.classList.add("is-open"));
+    burger.setAttribute("aria-expanded", "true");
+    if (window.lenis) window.lenis.stop();
+    menu.querySelector("a").focus();
+  });
+  $$("a", menu).forEach(a => a.addEventListener("click", closeMenu));
+  addEventListener("keydown", (e) => { if (e.key === "Escape" && !menu.hidden) { closeMenu(); burger.focus(); } });
+
+  /* Highlight the section in view */
+  const links = $$(".nav__links a");
+  const byId = Object.fromEntries(links.map(a => [a.getAttribute("href").slice(1), a]));
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => {
+      const a = byId[en.target.id];
+      if (a && en.isIntersecting) {
+        links.forEach(l => l.removeAttribute("aria-current"));
+        a.setAttribute("aria-current", "true");
+      }
+    });
+  }, { rootMargin: "-45% 0px -50% 0px" });
+  Object.keys(byId).forEach(id => { const s = document.getElementById(id); if (s) io.observe(s); });
+})();
+
+/* ══════════════════════════════════════════════════════════════════════════
+   CONTACT FORM — composes a WhatsApp message, nothing is stored
+   ══════════════════════════════════════════════════════════════════════════ */
+(function () {
+  const form = $("#waForm"), err = $("#formErr");
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const name = form.elements.name.value.trim(),
+          email = form.elements.email.value.trim(),
+          msg = form.elements.message.value.trim();
+    if (!name || !email || !msg) {
+      err.textContent = "Please fill in your name, email and message.";
+      (!name ? form.elements.name : !email ? form.elements.email : form.elements.message).focus();
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      err.textContent = "That email doesn’t look right — check it once?";
+      form.elements.email.focus();
+      return;
+    }
+    err.textContent = "";
+    const text = "Hi Shadrack, I’m " + name + " (" + email + "). " + msg;
+    open(waURL(text), "_blank", "noopener");
+  });
+})();
+</script>
+<script>
+/* ══════════════════════════════════════════════════════════════════════════
+   MOTION — GSAP + ScrollTrigger in the style of Linea.
+   Everything below is progressive: no GSAP or reduced motion = plain page.
+   ══════════════════════════════════════════════════════════════════════════ */
+(function () {
+  const hasGSAP = !!window.gsap && !!window.ScrollTrigger;
+  if (!hasGSAP || prefersReduced.matches) {
+    document.documentElement.classList.remove("js-motion");
+    $$("[data-reveal]").forEach(el => el.classList.add("is-in"));
+    return; /* page stays fully usable: native scroll, no animation */
+  }
+  document.documentElement.classList.add("js-motion");
+  gsap.registerPlugin(ScrollTrigger);
+
+  /* ── Lenis smooth scrolling, wired into ScrollTrigger ── */
+  if (window.Lenis && !prefersReduced.matches) {
+    const lenis = new Lenis({ duration: 1.1, smoothWheel: true });
+    window.lenis = lenis;
+    lenis.on("scroll", ScrollTrigger.update);
+    gsap.ticker.add((t) => lenis.raf(t * 1000));
+    gsap.ticker.lagSmoothing(0);
+    $$('a[href^="#"]').forEach(a => a.addEventListener("click", (e) => {
+      const id = a.getAttribute("href");
+      if (id.length > 1 && document.querySelector(id)) {
+        e.preventDefault();
+        lenis.scrollTo(id, { offset: -20 });
+        history.replaceState(null, "", id);
+      }
+    }));
+  }
+
+  /* ── Split headlines into word spans (no plugin needed) ── */
+  $$('[data-split]').forEach(el => {
+    const words = el.textContent.trim().split(/\s+/);
+    el.innerHTML = words.map(w => '<span class="w w-lift"><i>' + w + "</i></span>").join(" ");
+  });
+
+  /* ── Generic reveals ── */
+  $$('[data-reveal]').forEach(el => {
+    const kids = el.matches('[data-split]') ? $$('i', el) : null;
+    const vars = {
+      duration: .9,
+      stagger: kids ? .06 : 0,
+      ease: "power3.out",
+      scrollTrigger: { trigger: el, start: "top 88%", once: true },
+      onStart: () => el.classList.add("is-in")
+    };
+    if (kids) {
+      gsap.fromTo(kids, { yPercent: 108 }, Object.assign({ yPercent: 0 }, vars));
+    } else {
+      gsap.fromTo(el, { y: 26, opacity: 0 }, Object.assign({ y: 0, opacity: 1 }, vars));
+    }
+  });
+
+  /* ── Hero: bubbles pop in one by one, photo parallax on exit ── */
+  gsap.from('[data-bubble]', {
+    scale: .55, opacity: 0, rotation: (i) => [-6, 5, -4][i] || 0,
+    transformOrigin: "50% 100%", duration: .8, stagger: .22, delay: .45, ease: "back.out(2.2)"
+  });
+  if (matchMedia("(min-width: 901px)").matches) {
+    gsap.to('[data-bubble]', {
+      y: (i) => -26 - i * 14, opacity: 0, ease: "none",
+      scrollTrigger: { trigger: ".hero", start: "40% top", end: "bottom top", scrub: true }
+    });
+  }
+  gsap.to("#heroPhoto", {
+    scale: 1.14, yPercent: 6, ease: "none",
+    scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true }
+  });
+
+  /* ── "You ask / I deliver" scrubbed stage ── */
+  const asks = $$('[data-ask]'), answers = $$('[data-deliver]');
+  if (matchMedia("(min-width: 861px)").matches) {
+    gsap.set(answers, { opacity: .25, x: 26 });
+    gsap.set(".how__mid", { scaleY: 0, opacity: 1 });
+    const tl = gsap.timeline({
+      scrollTrigger: { trigger: ".how__stage", start: "top 12%", end: "+=160%", pin: true, pinSpacing: true, scrub: .6 }
+    });
+    tl.to(".how__mid", { scaleY: 1, duration: .6, ease: "none" }, 0);
+    asks.forEach((a, i) => {
+      tl.from(a, { x: -34, opacity: 0, duration: .7, ease: "power2.out" }, i * .9)
+        .to(answers[i], { opacity: 1, x: 0, duration: .7, ease: "power2.out" }, i * .9 + .45);
+    });
+  } else {
+    answers.forEach(el => gsap.from(el, {
+      x: 22, opacity: 0, duration: .7, ease: "power2.out",
+      scrollTrigger: { trigger: el, start: "top 90%", once: true }
+    }));
+  }
+
+  /* ── Projects: the mockup follows the card in view ── */
+  siteCards.forEach((card, i) => {
+    ScrollTrigger.create({
+      trigger: card, start: "top 62%", end: "bottom 45%",
+      onEnter: () => activateSite(i),
+      onEnterBack: () => activateSite(i)
+    });
+  });
+  ScrollTrigger.create({
+    trigger: "#projects", start: "top 80%", once: true,
+    onEnter: () => gsap.fromTo("#mockBrowser", { y: 40, opacity: 0, rotationX: 8 },
+      { y: 0, opacity: 1, rotationX: 0, duration: 1, ease: "power3.out" })
+  });
+
+  window.__lineaMotion = true; /* part 2 attaches below */
+})();
+</script>
+<script>
+/* ══════════════════════════════════════════════════════════════════════════
+   MOTION part 2 — pinned track, stacking cards, wipe, cursor, tilt
+   ══════════════════════════════════════════════════════════════════════════ */
+(function () {
+  const ready = window.__lineaMotion;
+  const desktop = matchMedia("(min-width: 900px)");
+
+  if (ready && desktop.matches) {
+    /* ── "In the room": pinned horizontal track ── */
+    const track = $("#roomsTrack"), viewport = $("#roomsViewport");
+    const scrollLen = () => track.scrollWidth - viewport.clientWidth + parseFloat(getComputedStyle(track).paddingLeft);
+    gsap.to(track, {
+      x: () => -scrollLen(),
+      ease: "none",
+      scrollTrigger: {
+        trigger: "#stories", start: "top top", end: () => "+=" + scrollLen(),
+        pin: true, scrub: .8, invalidateOnRefresh: true, anticipatePin: 1
+      }
+    });
+
+    /* ── Three steps: stacked cards shrink & dim as the next arrives ── */
+    const steps = $$('[data-step]');
+    steps.forEach((card, i) => {
+      if (i === steps.length - 1) return;
+      gsap.to(card, {
+        scale: .94 - (steps.length - 1 - i) * .01, opacity: .55,
+        ease: "none",
+        scrollTrigger: { trigger: steps[i + 1], start: "top 82%", end: "top 30%", scrub: true }
+      });
+    });
+  }
+
+  if (ready) {
+    /* ── Closing CTA: green bars wipe across the headline ── */
+    const wipe = $("[data-wipe]");
+    const words = wipe.textContent.trim().split(/\s+/);
+    wipe.innerHTML = words.map(w => '<span class="wipe">' + w + "</span>").join(" ");
+    /* Each word gets a green bar that covers it, then clears as you scroll */
+    gsap.fromTo(wipe.querySelectorAll(".wipe"), { "--wipe": 1 }, {
+      "--wipe": 0, ease: "none", stagger: .35,
+      scrollTrigger: { trigger: wipe, start: "top 82%", end: "top 30%", scrub: .4 }
+    });
+
+    /* ── Footer wordmark rises ── */
+    gsap.from("#footMark", {
+      yPercent: 55, opacity: 0, duration: 1.1, ease: "power3.out",
+      scrollTrigger: { trigger: "#foot", start: "top 75%", once: true }
+    });
+    gsap.from(".nav__logo .stroke", { strokeDashoffset: 60, duration: 1.4, ease: "power2.inOut", delay: .2 });
+
+    /* Keep triggers honest as images/fonts land */
+    addEventListener("load", () => ScrollTrigger.refresh());
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => ScrollTrigger.refresh());
+  }
+
+  /* ══════════════════════════════════════════════════════════════════════
+     POINTER-FINE EXTRAS — cursor, magnetic buttons, card tilt
+     ══════════════════════════════════════════════════════════════════════ */
+  if (finePointer.matches && !prefersReduced.matches) {
+    const dot = $(".cursor-dot"), ring = $(".cursor-ring");
+    let rx = -100, ry = -100, tx = -100, ty = -100, shown = false;
+
+    addEventListener("pointermove", (e) => {
+      tx = e.clientX; ty = e.clientY;
+      if (!shown) { rx = tx; ry = ty; shown = true; document.documentElement.classList.add("has-cursor"); }
+      dot.style.transform = "translate(" + tx + "px," + ty + "px)";
+    }, { passive: true });
+    addEventListener("pointerleave", () => { document.documentElement.classList.remove("has-cursor"); shown = false; });
+    addEventListener("pointerover", (e) => {
+      ring.classList.toggle("is-big", !!e.target.closest("a, button, summary, input, textarea, [data-cursor], [data-tilt]"));
+    }, { passive: true });
+
+    const lag = () => {
+      rx += (tx - rx) * .16; ry += (ty - ry) * .16;
+      ring.style.transform = "translate(" + rx + "px," + ry + "px)";
+      requestAnimationFrame(lag);
+    };
+    lag();
+
+    /* Magnetic buttons */
+    $$('[data-magnetic]').forEach(el => {
+      el.addEventListener("pointermove", (e) => {
+        const r = el.getBoundingClientRect();
+        const dx = (e.clientX - (r.left + r.width / 2)) / (r.width / 2);
+        const dy = (e.clientY - (r.top + r.height / 2)) / (r.height / 2);
+        el.style.transform = "translate(" + dx * 7 + "px," + dy * 6 + "px)";
+      });
+      el.addEventListener("pointerleave", () => { el.style.transform = ""; });
+    });
+
+    /* Tilt on cards */
+    $$('[data-tilt]').forEach(el => {
+      el.addEventListener("pointermove", (e) => {
+        const r = el.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width - .5;
+        const py = (e.clientY - r.top) / r.height - .5;
+        el.style.transform =
+          "perspective(900px) rotateX(" + (-py * 5).toFixed(2) + "deg) rotateY(" + (px * 6).toFixed(2) + "deg) translateY(-2px)";
+      });
+      el.addEventListener("pointerleave", () => { el.style.transform = ""; });
+    });
+  }
+})();
+</script>
+<script>
+/* FAQ — smooth open/close on top of native <details> (keyboard included) */
+(function () {
+  $$(".faq__item").forEach(d => {
+    const summary = d.querySelector("summary"), inner = d.querySelector(".faq__a > div");
+    summary.addEventListener("click", (e) => {
+      if (!window.gsap || prefersReduced.matches) return; /* native toggle */
+      e.preventDefault();
+      if (d.open) {
+        gsap.to(inner, { height: 0, duration: .38, ease: "power2.in",
+          onComplete: () => { d.open = false; gsap.set(inner, { height: "" }); } });
+      } else {
+        d.open = true;
+        gsap.from(inner, { height: 0, duration: .45, ease: "power2.out" });
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
